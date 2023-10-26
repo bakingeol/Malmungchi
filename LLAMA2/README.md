@@ -2,20 +2,16 @@
 
 ```
 train
-cli command : deepspeed --include localhost:0 --master_port 25999 train.py --train_mode='lora'
-inference
-CUDA_VISIBLE_DEVICES=0 python generate.py --inference_mode='lora'
-```
+cli command : 
+# step 1
+deepspeed --include localhost:0 --master_port 25999 train.py --train_mode=full
 
-NOTE : 
-- train_mode='full' full fine-tuning 을 의미합니다.
-- qlora, lora generate시 반드시 adapter_path에 adapter_model/config 파일 전체를 지정해주세요.
-```
-CUDA_VISIBLE_DEVICES=0 python generate.py --inference_mode='lora' --adapter_model=f'checkpoint-{steps}'
-```
-- full generate시 global_stpe{steps}가 포함된 전체 ckpt file을 model_path로 지정해주세요.
-```
-CUDA_VISIBLE_DEVICES=0 python generate.py --inference_mode='lora' --model_path=f'checkpoint-{steps}'
+# step 2 (ps. your_own_ckpt_path에 저장된 파일 checkpoint-[number] 의 path를 넣어주세요)
+deepspeed --include localhost:0 --master_port 25999 train.py --train_mode=lora --ckpt_full_path=your_own_ckpt_path
+
+# step 3 (lora checkpoint를 your_own_ckpt_path에 넣어주세요)
+inference
+CUDA_VISIBLE_DEVICES=0 python generate.py --inference_mode=lora --adapter_path=your_own_ckpt_path
 ```
 
 ## Hyper parameters

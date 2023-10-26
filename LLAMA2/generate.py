@@ -38,7 +38,7 @@ special_tokens = {
 tokenizer.add_special_tokens(special_tokens)
 
 # load model
-if args.train_mode == 'qlora':
+if args.inference_mode == 'qlora':
     quantization_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_compute_dtype=torch.bfloat16,
@@ -54,16 +54,19 @@ if args.train_mode == 'qlora':
     model.resize_token_embeddings(len(tokenizer))
     model = PeftModel.from_pretrained(model, args.adapter_path).to(device)
 
-if args.train_mode == 'lora':
+if args.inference_mode == 'lora':
     model = AutoModelForCausalLM.from_pretrained(
         args.model_id,
         torch_dtype=torch.bfloat16,
         device_map={"": Accelerator().device}
     )
     model.resize_token_embeddings(len(tokenizer))
-    model = PeftModel.from_pretrained(model, args.adapter_path).to(device)
 
-if args.train_mode == 'full':
+    model = PeftModel.from_pretrained(model, args.adapter_path)
+    state_dict = get_fp32_state_dict_from_zero_checkpoint(args.adapter_path)
+    model.to(device)
+
+if args.inference_mode == 'full':
     model_base = AutoModelForCausalLM.from_pretrained(
         args.model_id, dtype=torch.bfloat16)
     state_dict = get_fp32_state_dict_from_zero_checkpoint(args.model_path)
