@@ -1,4 +1,4 @@
-# 2023 국립국어원 인공 지능 언어 능력 평가: 이야기 완성 과제 (603310팀 - 6th / 40)
+# 2023 국립국어원 인공 지능 언어 능력 평가: 이야기 완성 과제 (603310팀)
 <img width="477" alt="image" src="https://github.com/bakingeol/Malmungchi/assets/113816871/7e1ac3ea-80da-4ae9-a6cc-8be679a6ef11">
 
 <img width="923" alt="스크린샷 2023-10-21 오후 7 26 35" src="https://github.com/akpe12/Malmungchi/assets/77143331/e3bf92b7-1643-45c7-849a-1e4b15962dc7">
